@@ -1,0 +1,88 @@
+# sentences that can pe parsed
+
+O fata frumoasa doarme.
+# A beautiful girl sleeps.
+
+Un baiat frumos doarme.
+# A beautiful boy sleeps.
+
+Niste fete frumoase dorm.
+# Some beautiful girls sleep.
+
+Un baiat doarme linistit.
+# A boy sleeps peacefully.
+
+Ele dorm.
+# They sleep.
+
+O femeie doarme.
+# A woman sleeps.
+
+Femeia doarme.
+# The woman sleeps.
+# in Romanian, the definite article is enclitic, attached at the end of the noun as a suffix
+
+Dormi linistit!
+# Sleep peacefully
+
+Canta o melodie!
+# Sing a song!
+
+Scrie repede!
+# Write fast!
+
+Maria nu doarme.
+# Maria not sleeps.
+
+Femeia doarme in gradina.
+# The woman sleeps in the garden.
+
+Andrei a dormit.
+# Andrei has slept.
+
+Eu citesc o carte.
+# I read a book.
+
+Baiat ul doarme.
+# should work, but isnt working and we dont know how to fix it
+
+
+# sentences that cannot be parsed
+
+O fata frumos doarme.
+# A beautiful+masc girl sleeps.
+# the noun does not agree in gender with the adjectival form
+
+Niste fata frumoase dorm.
+# Some beautiful+pl girl sleep.
+# the noun does not agree in number with the adjective
+
+O fata doarme linistit.
+# A girl sleeps peacefully+masc.
+# gender disagreement between the noun and the adverb
+
+Ele doarme.
+# They sleeps.
+# the pronoun does not agree in number and person with the verb
+
+O frumoasa fata doarme.
+# A beautiful girl sleeps.
+# in Romanian, the adjective follows the noun
+
+Dorm linistit!
+# Sleep(first person sg) peacefully!
+
+Maria doarme nu.
+# Maria sleeps not.
+# negation comes before the verb
+
+In gradina doarme femeia.
+# In the garden sleeps the woman.
+# the sentence structure in the rule section does not allow PPs in sentence initial positions
+
+Andrei dormit.
+# Andrei slept. (Instead of Andrei has slept.)
+
+Eu o carte citesc.
+# I a book read. 
+# fails because of the SVO word order
