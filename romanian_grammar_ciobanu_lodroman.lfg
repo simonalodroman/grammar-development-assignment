@@ -1,0 +1,318 @@
+DEMO   ROMANIAN   CONFIG (1.0)
+  ROOTCAT   ROOT.
+  FILES  .
+  LEXENTRIES   (DEMO ROMANIAN).
+  TEMPLATES (DEMO ROMANIAN).
+  RULES   (DEMO ROMANIAN).
+  MORPHOLOGY (DEMO ROMANIAN).
+  GOVERNABLERELATIONS    SUBJ OBJ OBJ2 COMP XCOMP OBL OBL-?+.
+  SEMANTICFUNCTIONS    ADJUNCT  TOPIC FOCUS POSS STANDARD.
+  NONDISTRIBUTIVES    NUM PERS CONJ-FORM.
+  EPSILON   e.
+  OPTIMALITYORDER NOGOOD.
+
+----
+
+DEMO ROMANIAN MORPHOLOGY (1.0)
+
+TOKENIZE:
+P!basic-parse-tok.fst G!default-gen-tokenizer.fst
+
+----
+
+DEMO   ROMANIAN   RULES (1.0)
+
+ROOT -->  { S | Simp}. 
+
+Simp --> e: (^ SUBJ PRED) = 'pro'
+	       (^ SUBJ PERS) = 2; 
+ 	  VP
+ 	  EXCL. 
+
+S -->	NP: (^SUBJ) = !
+	    	(!CASE) = NOM;
+	    	VP: ^=!;
+        (PERIOD).
+
+VP -->  (AUX)
+        (NEG)
+      V: ^=!;
+      (AdvP: (^ADJUNCT) = !)
+      (NP: (^OBJ)=!) "direct object"
+      (NP: (^OBJ2) = !)
+      (PP : ! $ (^ ADJUNCT))
+    .
+
+PP --> P: ^ = ! 
+	    (! PTYPE) =c sem; 
+ 	    NP: (^ OBJ) = !. 
+
+NP --> 
+ 	  {
+    {(D: ^=!
+		@ADJ-AGR) " determiner with adj agreement"
+ 	    N: ^ = ! 
+      |N: ^ = !;
+       (D": (^ SUBJ GEND) =c masc")}
+      AP*: ! $ (^ ADJUNCT)
+        @ADJ-AGR;
+    | PRON}.
+
+AP --> ADV*: ! $ (^ ADJUNCT);
+ 	  ADJ
+ 	  (COMMA).
+
+ AdvP --> ADV*: ! $ (^ ADJUNCT);
+            ADV
+           (COMMA).
+
+----
+DEMO   ROMANIAN   TEMPLATES (1.0)
+
+
+PRES3SG = @(TENSE Pres)     
+          (^SUBJ PERS) = 3
+          (^SUBJ NUM) = Sg.
+
+
+COMMON-NOUN-PNC(P N C) =	(^PRED) = 'P' 
+							(^NUM) = N
+							(^PERS) = 3
+							(^NTYPE NSYN) = common
+							(^NTYPE NSEM COMMON)=C.
+
+COUNT-NOUN(_P G N) = 
+	  (^ PRED) = '_P'
+	  @NTYPE
+	  (^ GEND) = G
+	  (^ NUM) = N
+	  (^ PERS) = 3.
+
+NTYPE = (^ NTYPE NSEM COMMON) = count
+	   (^ NTYPE NSYN) = common.
+
+TENSE(P) =  (^TENSE) = P  
+            (^MOOD) = indicative.
+
+TRANS(P) = (^ PRED)='P<(^ SUBJ) (^ OBJ)>'. 
+
+
+TRANS-OPT(P) = {(^PRED) =  'P<(^SUBJ)(^OBJ)>'     
+                |(^PRED) =  'P<(^SUBJ)>'}.
+
+
+INTRANS(P) = (^PRED) = 'P<(^SUBJ)>'. 
+
+PASTP = (^ PARTICIPLE) = past.
+
+PRON(P Z   N T) = (^ PRED) = 'P'
+	  (^ NUM) = N
+	  (^ PERS) = Z
+	  (^ PRON-TYPE) = T
+	  (^ NTYPE) = pron.
+
+PROPN(P G) = (^PRED)='P' 
+	  (^ GEND) = G
+	  (^ NUM)=sg
+	  (^ PERS)=3.
+
+SUBJ-AGR(P N) = (^ SUBJ NUM)=N  
+	  (^ SUBJ PERS)=P.
+
+SUBJ-AGR-N(N) = (^ SUBJ NUM)=N.  
+
+SUBJ-AGR-P(P) = (^ SUBJ PERS)=P.  
+
+GEND(G) = (^ GEND) = G. 
+
+NUM(N) = (^ NUM) = N.
+
+PERS(P) = (^ PERS) = P.
+
+CASE(C) = (^ CASE) = C.
+
+DEF =  (^ DEF).
+
+NEG =  (^ NEG).
+
+ADJ-AGR = (^ NUM) = (! NUM)    
+	  (^ GEND) = (! GEND)
+	  (^ CASE) = (! CASE).
+
+ADV-AGR = (^ NUM) = (! NUM)    
+	  (^ GEND) = (! GEND)
+	  (^ CASE) = (! CASE).
+
+ADJ(_P T) = (^ PRED) = '_P'
+	  (^ ATYPE) = attributive
+	  (^ DEGREE) = positive.
+    PRED(_P) = (^ PRED) = '_P'.
+  
+PREP(P) = 
+	  (^ PRED) = 'P<(^OBJ)>' 
+	    (^ PTYPE) = sem.
+    
+----
+
+DEMO ROMANIAN LEXICON (1.0)
+
+"Pronouns"
+
+Ele 	  PRON * @(PRON ele 3 pl pers)
+      @(GEND fem).
+
+Eu  PRON * @(PRON eu 1 sg pers).
+
+
+"Nouns"
+
+gradina N * @(COUNT-NOUN %stem fem sg).
+
+melodie N * @(COUNT-NOUN %stem fem sg).
+
+fata N * @(COUNT-NOUN %stem fem sg).
+
+fete N * @(COUNT-NOUN %stem fem pl).
+
+carte N * @(COUNT-NOUN %stem fem sg).
+
+Baiat N *   (^ PRED) = 'baiat'
+            (^ GEND) = masc
+            (^ NUM) = sg
+            (^ PERS) = 3
+            "(^ DEF) = -".  "without the def article, the noun is indefinite"
+			
+baiat N *   (^ PRED) = 'baiat'
+            (^ GEND) = masc
+            (^ NUM) = sg
+            (^ PERS) = 3
+            "(^ DEF) = -".  "without the def article, the noun is indefinite"
+
+ul D * (^ PRED) = 'ul'
+        (^ DEF) = +
+        (^ GEND) = masc
+          "(^ SUBJ GEND) =c masc".
+
+femeie N   * (^ PRED) = 'femeie'
+            (^ GEND) = fem
+            (^ NUM) = sg
+            (^ PERS) = 3
+            (^ DEF) = -.
+
+femeia N  * (^ PRED) = 'femeie'
+            (^ GEND) = fem
+            (^ NUM) = sg
+            (^ PERS) = 3
+            (^ DEF) = +.
+			
+Femeia N  * (^ PRED) = 'femeie'
+            (^ GEND) = fem
+            (^ NUM) = sg
+            (^ PERS) = 3
+            (^ DEF) = +.
+
+"Names"
+
+Andrei	  N * @(PROPN %stem masc).
+
+Maria	  N * @(PROPN %stem fem).
+
+
+"Verbs"
+
+Dormi V * @(INTRANS dormi)
+            @(SUBJ-AGR 2 sg)
+            @(TENSE pres).
+
+Scrie V * @(TRANS-OPT scrie)
+            @(SUBJ-AGR 2 sg)
+            @(TENSE pres).
+
+
+dorm    V * @(INTRANS dormi)
+           { (^ SUBJ PERS) = 1
+                | (^ SUBJ PERS) = 3}
+            @(TENSE pres).
+
+doarme V * @(INTRANS dormi)
+             (^ SUBJ PERS) = 3
+              (^ SUBJ NUM) = sg
+            @(TENSE pres).
+
+dormit V * @(INTRANS dormi)
+            (^ SUBJ PERS) = 3
+            (^ SUBJ NUM) = sg
+            @PASTP.
+
+Canta V * @(TRANS canta)
+            (^ SUBJ PERS) = 2
+            (^ SUBJ NUM) = sg
+            @(TENSE pres).
+
+citesc V * @(TRANS citi)
+            (^ SUBJ PERS) = 1
+            (^ SUBJ NUM) = sg
+            @(TENSE pres).
+
+
+"Auxiliaries"
+
+a		AUX *	(^TENSE)= Past 
+				 (^ SUBJ PERS) = 3
+          (^ SUBJ NUM) = sg.
+
+
+"Adjuncts adjectives and adverbs"
+
+frumoasa   ADJ * (^PRED) = 'frumoasa'
+		@(GEND fem)
+		@(NUM sg).
+
+frumoase   ADJ * (^PRED) = 'frumoasa'
+		@(GEND fem)
+		@(NUM pl).
+
+frumos  ADJ * (^PRED) = 'frumos'
+		@(GEND masc)
+		@(NUM sg).
+
+linistit  ADV * (^PRED) = 'linistit'
+  @(GEND masc)
+		@(NUM sg).
+
+repede ADV * (^PRED) = 'repede'.
+
+"Determiners"
+
+o D *  (^ DEF) = -   "this indefinite only marks singulars"
+        (^ NUM) = sg
+        @(GEND fem).
+
+O D *  (^ DEF) = -   "this indefinite only marks singulars"
+        (^ NUM) = sg
+        @(GEND fem).
+
+Un   D *  (^ DEF) = -   "this indefinite only marks singulars"
+        (^ NUM) = sg
+        @(GEND masc).
+
+Niste D *  (^ DEF) = -   "this indefinite only marks singulars"
+        (^ NUM) = pl.
+
+
+"Prepositions"
+
+in   P * @(PREP in).
+
+
+"negation"
+
+nu      NEG * (^ NEG)=+.
+
+"punctuation"
+
+. PERIOD * . 
+
+!  EXCL * . 
+
+----
